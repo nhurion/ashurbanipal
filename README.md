@@ -16,4 +16,6 @@ Setup
 
 Launcher is configured to use memcached for session management.
 Setting the environment variable DEV_MODE to true will disable the memcached session management.
-Started basic work using mongo db,
+
+This project is using travis to do continuous build. That's what the .travis.yml file is for, configuring travis.
+[![Build Status](https://secure.travis-ci.org/nhurion/ashurbanipal.png)](http://travis-ci.org/nhurion/ashurbanipal)
