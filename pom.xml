@@ -12,6 +12,7 @@
         <module>app</module>
         <module>server</module>
         <module>domain</module>
+        <module>server-its</module>
     </modules>
 
     <name>Ashurbanipal</name>
@@ -174,6 +175,13 @@
                 <artifactId>hamcrest-library</artifactId>
                 <version>1.2</version>
             </dependency>
+
+            <dependency>
+                <groupId>org.seleniumhq.selenium</groupId>
+                <artifactId>selenium-java</artifactId>
+                <version>2.24.1</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
@@ -195,6 +203,7 @@
                 <configuration>
                     <includes>
                         <include>**/*Spec.java</include>
+                        <include>**/*Test.java</include>
                     </includes>
                 </configuration>
             </plugin>

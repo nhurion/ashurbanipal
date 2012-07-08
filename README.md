@@ -1,5 +1,6 @@
 Ashurbanipal
 ============
+[![Build Status](https://secure.travis-ci.org/nhurion/ashurbanipal.png)](http://travis-ci.org/nhurion/ashurbanipal)
 
 This is a small application to manage my library.
 Build with Vaadin, and planned to be deployed on heroku.
@@ -17,5 +18,13 @@ Setup
 Launcher is configured to use memcached for session management.
 Setting the environment variable DEV_MODE to true will disable the memcached session management.
 
-This project is using travis to do continuous build. That's what the .travis.yml file is for, configuring travis.
-[![Build Status](https://secure.travis-ci.org/nhurion/ashurbanipal.png)](http://travis-ci.org/nhurion/ashurbanipal)
+What's in there?
+----------------
+
+I use this project to test all kind of frameworks and tools.
+
+For the moment there is:
+* [Travis](http://travis-ci.org/): continuous build/test hooked to gitHub. The .travis.yml file is for configuring travis;
+* [JDave](http://jdave.org/): BDD tool. Used to write tests as specifications, and ensure serializable session content.
+* [Selenium](http://seleniumhq.org/): Automated browser level integration tests. Just started with that.
+
