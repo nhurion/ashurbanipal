@@ -17,89 +17,94 @@ public class LibrarySpec extends Specification<Library> {
     public static final Book HITCHHIKER = new Book("The Ultimate Hitchhiker guides to the galaxy");
     public static final Book DUNE = new Book("Dune");
 
-    public class EmptyLibrary{
+    public class EmptyLibrary {
         private Library library;
 
-        public Library create(){
+        public Library create() {
             library = new Library();
             return library;
         }
 
-        public void isEmpty(){
+        public void isEmpty() {
             specify(library, must.be.empty());
         }
 
-        public void isNoLongerEmptyAfterAddingABook(){
-            library.add(HITCHHIKER);
+        public void isNoLongerEmptyAfterAddingABook() {
+            library.addBook(HITCHHIKER);
             specify(library, must.not().be.empty());
         }
 
-        public void doesNotAcceptNullAsBook(){
+        public void isStillEmptyWhenAddingASeries(){
+            library.addFollowedSeries(SeriesTestData.HARRY_POTTER);
+            specify(library, must.be.empty());
+        }
+
+        public void doesNotAcceptNullAsBook() {
             specify(new Block() {
                 public void run() throws Throwable {
-                    library.add(null);
+                    library.addBook(null);
                 }
             }, should.raise(RuntimeException.class));
         }
     }
 
-    public class LibraryWithBooks{
+    public class LibraryWithBooks {
         private Library library;
 
-        public Library create(){
+        public Library create() {
             library = new Library();
-            library.add(NECRONOMICON);
-            library.add(HITCHHIKER);
-            library.add(DUNE);
+            library.addBook(NECRONOMICON);
+            library.addBook(HITCHHIKER);
+            library.addBook(DUNE);
             return library;
         }
 
-        public void isNotEmpty(){
-            specify(library,must.not().be.empty());
+        public void isNotEmpty() {
+            specify(library, must.not().be.empty());
         }
 
-        public void containsAllTheBooks(){
-            specify(library.getBooks(),containsInOrder(DUNE, NECRONOMICON, HITCHHIKER));
+        public void containsAllTheBooks() {
+            specify(library.getBooks(), containsInOrder(DUNE, NECRONOMICON, HITCHHIKER));
         }
 
-        public void canFindABookBasedOnTitle(){
+        public void canFindABookBasedOnTitle() {
             specify(library.findBookByTitle("Necronomicon"), contains(NECRONOMICON));
         }
 
-        public void isSerializable(){
+        public void isSerializable() {
             specify(library, satisfies(new SerializableContract()));
         }
 
-        public void cannotAddTwiceSameBook(){
+        public void cannotAddTwiceSameBook() {
             final int sizeBefore = library.getBooks().size();
-            library.add(NECRONOMICON);
+            library.addBook(NECRONOMICON);
             specify(library.getBooks().size(), sizeBefore);
         }
 
-        public void cannotAddTwoBooksWithSameTitle(){
+        public void cannotAddTwoBooksWithSameTitle() {
             final int sizeBefore = library.getBooks().size();
-            library.add(new Book("Necronomicon") );
+            library.addBook(new Book("Necronomicon"));
             specify(library.getBooks().size(), sizeBefore);
         }
     }
 
-    public class LibraryWithListeners{
+    public class LibraryWithListeners {
         private Library library;
         private AddBookListener addBookListener;
 
-        public Library create(){
+        public Library create() {
             library = new Library();
             addBookListener = mock(AddBookListener.class);
             library.addListener(addBookListener);
             return library;
         }
 
-        public void onBookAddedCalledWhenAddingABook(){
+        public void onBookAddedCalledWhenAddingABook() {
             final Book actualBook = DUNE;
             checking(new Expectations() {{
                 one(addBookListener).onBookAdded(actualBook);
             }});
-            library.add(actualBook);
+            library.addBook(actualBook);
         }
     }
 }

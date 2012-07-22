@@ -1,14 +1,12 @@
 package eu.hurion.ashurbanipal.model;
 
 import com.google.common.base.Objects;
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.ImmutableSortedSet;
 
 import java.io.Serializable;
-import java.util.*;
-
-import static com.google.common.collect.Ordering.natural;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * A Series represent a Series of books.
@@ -19,7 +17,6 @@ import static com.google.common.collect.Ordering.natural;
 public class Series implements Serializable {
     private final Set<Book> books = new LinkedHashSet<Book>();
     private String title;
-    private boolean complete;
 
     public Series(final String title, final Book firstBook, final Book... books) {
         this.title = title;
@@ -39,12 +36,25 @@ public class Series implements Serializable {
         books.add(book);
     }
 
-    public boolean isComplete() {
-        return complete;
-    }
-
     @Override
     public String toString() {
         return Objects.toStringHelper(title).toString();
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (o == null) {
+            return false;
+        }
+        if (!(o instanceof Series)) {
+            return false;
+        }
+        return Objects.equal(getTitle(), ((Series) o).getTitle());
+
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(title);
     }
 }

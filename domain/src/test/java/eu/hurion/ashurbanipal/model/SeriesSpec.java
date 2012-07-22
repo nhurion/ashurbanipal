@@ -2,6 +2,7 @@ package eu.hurion.ashurbanipal.model;
 
 import jdave.Block;
 import jdave.Specification;
+import jdave.contract.EqualsHashCodeContract;
 import jdave.contract.SerializableContract;
 import jdave.junit4.JDaveRunner;
 import org.junit.runner.RunWith;
@@ -30,10 +31,6 @@ public class SeriesSpec extends Specification<Series> {
             return series;
         }
 
-        public void isIncomplete(){
-            specify(series, must.not().be.isComplete());
-        }
-
         public void acceptNewBooks(){
             series.add(THE_WINDS_OF_WINTER);
             specify(series.getBooks(), must.contain(THE_WINDS_OF_WINTER));
@@ -56,5 +53,23 @@ public class SeriesSpec extends Specification<Series> {
             specify(series, satisfies(new SerializableContract()));
         }
 
+        public void implementsEqualsCorrectly(){
+            specify(series, satisfies(new EqualsHashCodeContract<Series>() {
+                @Override
+                protected Series equal() {
+                    return new Series("A Song of Ice and Fire", A_GAME_OF_THRONES);
+                }
+
+                @Override
+                protected Series nonEqual() {
+                    return new Series("Dune", new Book("Dune") );
+                }
+
+                @Override
+                protected Series subType() {
+                    return null;
+                }
+            }));
+        }
     }
 }

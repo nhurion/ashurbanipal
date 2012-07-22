@@ -41,11 +41,14 @@ public class LibraryView extends VerticalLayout implements AddBookListener {
         final TextField title = new TextField("Title");
         title.setDebugId(TITLE_INPUT);
         title.setNullRepresentation("");
+        title.setRequired(true);
         bookForm.addField("title", title);
 
         final TextField series = new TextField("Series");
         series.setDebugId(SERIES_INPUT);
         series.setNullRepresentation("");
+        series.setNullSettingAllowed(true);
+        series.setValue(null);
         bookForm.addField("series", series);
 
 
@@ -68,7 +71,7 @@ public class LibraryView extends VerticalLayout implements AddBookListener {
                     final Series newSeries = new Series(enteredSeries.toString(), newBook);
                     newBook.setSeries(newSeries);
                 }
-                library.add(newBook);
+                library.addBook(newBook);
                 title.setValue(null);
                 series.setValue(null);
             }

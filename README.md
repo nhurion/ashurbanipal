@@ -27,4 +27,4 @@ For the moment there is:
 * [Travis](http://travis-ci.org/): continuous build/test hooked to gitHub. The .travis.yml file is for configuring travis;
 * [JDave](http://jdave.org/): BDD tool. Used to write tests as specifications, and ensure serializable session content.
 * [Selenium](http://seleniumhq.org/): Automated browser level integration tests. Just started with that.
-
+* [Cucumber](https://github.com/cucumber/cucumber-jvm): BDD. Allow you to write test scenario in plain English, or French,... 40 languages supported.

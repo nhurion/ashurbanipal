@@ -13,7 +13,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -27,22 +26,39 @@ public class Library implements Serializable {
 
     private final Set<Book> books = new HashSet<Book>();
 
+    private final Set<Series> allSeries = new HashSet<Series>();
+
     private final Collection<AddBookListener> addBookListeners = new ArrayList<AddBookListener>();
 
     public boolean empty() {
         return books.isEmpty();
     }
 
-    public void add(@Nonnull final Book book) {
+    public void addBook(@Nonnull final Book book) {
         checkNotNull(book, "Null is not allowed in the library");
         if (books.contains(book)){
             return;
         }
         books.add(book);
-        for (AddBookListener addBookListener : addBookListeners) {
+        for (final AddBookListener addBookListener : addBookListeners) {
             addBookListener.onBookAdded(book);
         }
         LOG.debug("added book " + book);
+    }
+
+    /**
+     * Add a Series that the owner of the library follow.
+     * IF the Series is allready followed, it is not added a second time.
+     *
+     * @param series te Series that is followed.
+     */
+    public void addFollowedSeries(@Nonnull final Series series) {
+        checkNotNull(series, "Null is not allowed in the library");
+        if (allSeries.contains(series)){
+            return;
+        }
+        allSeries.add(series);
+        LOG.debug("added series " + series);
     }
 
     public Collection<Book> getBooks() {
@@ -58,7 +74,7 @@ public class Library implements Serializable {
         });
     }
 
-    public void addListener(AddBookListener listener){
+    public void addListener(final AddBookListener listener){
         addBookListeners.add(listener);
     }
 }
