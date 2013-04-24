@@ -1,7 +1,10 @@
 package eu.hurion.ashurbanipal.server.it;
 
 import com.bsb.common.vaadin.embed.EmbedVaadinServer;
-import eu.hurion.ashurbanipal.server.Launcher;
+import eu.hurion.ashurbanipal.application.AshurbanipalApplication;
+
+import static eu.hurion.vaadin.heroku.VaadinForHeroku.forApplication;
+import static eu.hurion.vaadin.heroku.VaadinForHeroku.testServer;
 
 /**
  * @author Nicolas Hurion
@@ -13,15 +16,15 @@ public class ServerHooks {
    // @Before
     public void startup(){
         if (!applicationStarted){
-            Launcher.setDevMode(true);
-            application = Launcher.buildServer().wait(false).build();
+            application = testServer(forApplication(AshurbanipalApplication.class)).build();
             application.start();
             applicationStarted = true;
         }
     }
 
  //   @After
-    public void shutdown() {
+    public void shutdown() throws InterruptedException {
+        Thread.sleep(1000);
         application.stop();
     }
 }

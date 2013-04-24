@@ -5,7 +5,6 @@ import com.vaadin.ui.*;
 import eu.hurion.ashurbanipal.model.AddBookListener;
 import eu.hurion.ashurbanipal.model.Book;
 import eu.hurion.ashurbanipal.model.Library;
-import eu.hurion.ashurbanipal.model.Series;
 
 import java.util.Collection;
 
@@ -20,9 +19,13 @@ public class LibraryView extends VerticalLayout implements AddBookListener {
     public static final String TITLE_INPUT = "title-input";
     public static final String ADD_BOOK = "add-book";
     public static final String SERIES_INPUT = "series-input";
+    public static final String MORE_SERIES = "more-series";
     private BeanContainer<String, Book> libraryContainer;
 
+    private final LibraryService libraryService;
+
     public LibraryView(final Library library) {
+        libraryService = new LibraryService(library);
         setSizeFull();
         setSpacing(true);
         setMargin(true);
@@ -30,12 +33,14 @@ public class LibraryView extends VerticalLayout implements AddBookListener {
         libraryTable.setDebugId(LIBRARY_TABLE);
         addComponent(libraryTable);
         libraryTable.setSizeFull();
-        final Form addBookForm = addBookForm(library);
+        final Form addBookForm = addBookForm();
         addComponent(addBookForm);
         library.addListener(this);
+        final FollowedSeries followedSeries = new FollowedSeries(library);
+        addComponent(followedSeries);
     }
 
-    private Form addBookForm(final Library library) {
+    private Form addBookForm() {
         final Form bookForm = new Form();
         bookForm.setCaption("Add a new book");
         final TextField title = new TextField("Title");
@@ -51,6 +56,10 @@ public class LibraryView extends VerticalLayout implements AddBookListener {
         series.setValue(null);
         bookForm.addField("series", series);
 
+        final CheckBox moreInSameSeries = new CheckBox("More on same series");
+        moreInSameSeries.setDebugId(MORE_SERIES);
+        bookForm.addField("more", moreInSameSeries);
+
 
         final HorizontalLayout okBar = new HorizontalLayout();
         okBar.setHeight("25px");
@@ -65,15 +74,13 @@ public class LibraryView extends VerticalLayout implements AddBookListener {
                 if (enteredTitle == null) {
                     return;
                 }
-                final Book newBook = new Book(enteredTitle.toString());
                 final Object enteredSeries = series.getValue();
-                if (enteredSeries != null) {
-                    final Series newSeries = new Series(enteredSeries.toString(), newBook);
-                    newBook.setSeries(newSeries);
-                }
-                library.addBook(newBook);
+                libraryService.addBook(enteredTitle.toString() , enteredSeries == null? null :enteredSeries.toString());
                 title.setValue(null);
-                series.setValue(null);
+                final Boolean value = (Boolean) moreInSameSeries.getValue();
+                if (!value){
+                    series.setValue(null);
+                }
             }
         });
         okBar.addComponent(okButton);

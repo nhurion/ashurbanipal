@@ -18,7 +18,12 @@
     <dependencies>
         <dependency>
             <groupId>eu.hurion.ashurbanipal</groupId>
-            <artifactId>ashurbanipal-server</artifactId>
+            <artifactId>ashurbanipal-app</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>eu.hurion.vaadin.heroku</groupId>
+            <artifactId>vaadin-for-heroku</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

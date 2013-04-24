@@ -19,7 +19,7 @@ public class RunCukesTest {
     }
 
     @AfterClass
-    public static void stop(){
+    public static void stop() throws InterruptedException {
         serverHooks.shutdown();
     }
 }

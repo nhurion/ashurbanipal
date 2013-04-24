@@ -29,6 +29,7 @@ public class Library implements Serializable {
     private final Set<Series> allSeries = new HashSet<Series>();
 
     private final Collection<AddBookListener> addBookListeners = new ArrayList<AddBookListener>();
+    private final Collection<AddSeriesListener> addSeriesListeners = new ArrayList<AddSeriesListener>();
 
     public boolean empty() {
         return books.isEmpty();
@@ -44,6 +45,9 @@ public class Library implements Serializable {
             addBookListener.onBookAdded(book);
         }
         LOG.debug("added book " + book);
+        if (book.getSeries()!= null && !allSeries.contains(book.getSeries())){
+            addFollowedSeries(book.getSeries());
+        }
     }
 
     /**
@@ -56,6 +60,9 @@ public class Library implements Serializable {
         checkNotNull(series, "Null is not allowed in the library");
         if (allSeries.contains(series)){
             return;
+        }
+        for (final AddSeriesListener listener : addSeriesListeners) {
+            listener.onSeriesAdded(series);
         }
         allSeries.add(series);
         LOG.debug("added series " + series);
@@ -74,7 +81,24 @@ public class Library implements Serializable {
         });
     }
 
+    public Collection<Book> findExactBookByTitle(final String title) {
+        return Collections2.filter(books, new Predicate<Book>() {
+            @Override
+            public boolean apply(final Book book) {
+                return book.getTitle().equalsIgnoreCase(title);
+            }
+        });
+    }
+
     public void addListener(final AddBookListener listener){
         addBookListeners.add(listener);
+    }
+
+    public void addListener(final AddSeriesListener listener){
+        addSeriesListeners.add(listener);
+    }
+
+    public Set<Series> getFollowedSeries() {
+        return allSeries;
     }
 }

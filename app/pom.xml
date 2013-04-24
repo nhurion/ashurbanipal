@@ -21,10 +21,14 @@
             <groupId>eu.hurion.ashurbanipal</groupId>
             <artifactId>ashurbanipal-domain</artifactId>
         </dependency>
-
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.hurion.vaadin.heroku</groupId>
+            <artifactId>vaadin-for-heroku</artifactId>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>

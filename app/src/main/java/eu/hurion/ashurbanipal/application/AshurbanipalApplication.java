@@ -16,15 +16,7 @@ public class AshurbanipalApplication extends Application {
     }
 
     private Library loadLibrary() {
-        final Library library = new Library();
-//        library.addBook(new Book("Neuromancer"));
-//        library.addBook(new Book("Necronomicon"));
-//        Book firstHarryPotter = new Book("Harry Potter and the Philosopher Stone");
-//        Series harryPotterSeries = new Series("Harry Potter", firstHarryPotter);
-//        firstHarryPotter.setSeries(harryPotterSeries);
-//        library.addBook(firstHarryPotter);
-//        library.addBook(new Book("Dune"));
-        return library;
+        return new Library();
     }
 
 }
